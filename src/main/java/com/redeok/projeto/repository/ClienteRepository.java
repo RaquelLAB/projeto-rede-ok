@@ -48,4 +48,15 @@ public class ClienteRepository {
                         .orElse(0) > 0);
     }
 
+    public void update(Cliente cliente) {
+        jdbi.useHandle(handle -> {
+            handle.createUpdate("UPDATE cliente SET nome = :nome, telefone = :telefone, email = :email, num_documento = :numDocumento, tipo_documento = :tipoDocumento::tipo_documento_enum WHERE num_documento = :numDocumento")
+                    .bind("nome", cliente.getNome())
+                    .bind("telefone", cliente.getTelefone())
+                    .bind("email", cliente.getEmail())
+                    .bind("numDocumento", cliente.getNumDocumento())
+                    .bind("tipoDocumento", cliente.getTipoDocumento())
+                    .execute();
+        });
+    }
 }

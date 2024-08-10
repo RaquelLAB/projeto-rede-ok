@@ -3,6 +3,7 @@ package com.redeok.projeto.resource;
 
 
 
+import com.redeok.projeto.Validaton.validator.PatchValidator;
 import com.redeok.projeto.entity.Cliente;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
@@ -11,8 +12,13 @@ import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import com.redeok.projeto.repository.ClienteRepository;
+import com.redeok.projeto.patchDTO.ClientePatchDTO;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @Path("/clientes")
@@ -56,4 +62,47 @@ public class ClienteResource {
         }
 
     }
+
+    @PATCH
+    @Path("/{numDocumento}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response updatePartial(@PathParam("numDocumento") String numDocumento, ClientePatchDTO patchDto) {
+        Cliente existingCliente = clienteRepository.findById(numDocumento);
+
+        if (existingCliente == null) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+
+        PatchValidator patchValidator = new PatchValidator();
+
+        Map<Supplier<Optional<String>>, Function<String, Response>> validations = Map.of(
+                patchDto::getNome, patchValidator::validarNome,
+                patchDto::getTelefone, patchValidator::validarTelefone,
+                patchDto::getEmail, patchValidator::validarEmail,
+                patchDto::getNumDocumento, patchValidator::validarNumDocumento,
+                patchDto::getTipoDocumento, patchValidator::validarTipoDocumento
+        );
+
+        for (Map.Entry<Supplier<Optional<String>>, Function<String, Response>> entry : validations.entrySet()) {
+            Optional<String> valueOpt = entry.getKey().get();
+            if (valueOpt.isPresent()) {
+                Response erro = entry.getValue().apply(valueOpt.get());
+                if (erro != null) {
+                    return erro;
+                }
+            }
+        }
+
+        patchDto.getNome().ifPresent(existingCliente::setNome);
+        patchDto.getTelefone().ifPresent(existingCliente::setTelefone);
+        patchDto.getEmail().ifPresent(existingCliente::setEmail);
+        patchDto.getNumDocumento().ifPresent(existingCliente::setNumDocumento);
+        patchDto.getTipoDocumento().ifPresent(existingCliente::setTipoDocumento);
+
+        clienteRepository.update(existingCliente);
+
+        return Response.ok(existingCliente).build();
+    }
+
 }

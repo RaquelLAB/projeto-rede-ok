@@ -17,5 +17,4 @@ public class TelefoneValidator implements ConstraintValidator<ValidTelefone, Str
         }
         return value.matches("\\d{10,11}");
     }
-
 }
