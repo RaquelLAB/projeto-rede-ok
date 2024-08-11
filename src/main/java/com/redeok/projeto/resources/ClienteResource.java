@@ -1,18 +1,17 @@
-package com.redeok.projeto.resource;
+package com.redeok.projeto.resources;
 
 
-
-
-import com.redeok.projeto.Validaton.validator.PatchValidator;
-import com.redeok.projeto.entity.Cliente;
+import com.redeok.projeto.repositories.EnderecoRepository;
+import com.redeok.projeto.validaton.validator.PatchValidator;
+import com.redeok.projeto.domain.Cliente;
 import jakarta.inject.Inject;
 import jakarta.validation.ConstraintViolationException;
 import jakarta.validation.Valid;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
-import com.redeok.projeto.repository.ClienteRepository;
-import com.redeok.projeto.patchDTO.ClientePatchDTO;
+import com.redeok.projeto.repositories.ClienteRepository;
+import com.redeok.projeto.dto.ClientePatchDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -29,6 +28,9 @@ public class ClienteResource {
 
     @Inject
     ClienteRepository clienteRepository;
+
+    @Inject
+    EnderecoRepository enderecoRepository;
 
     @GET
     public List<Cliente> listAll() {
@@ -103,6 +105,11 @@ public class ClienteResource {
         clienteRepository.update(existingCliente);
 
         return Response.ok(existingCliente).build();
+    }
+
+    @Path("/{numDocumento}/enderecos")
+    public EnderecoResource getEnderecoResource() {
+        return new EnderecoResource(enderecoRepository, clienteRepository);
     }
 
 }

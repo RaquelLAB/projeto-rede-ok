@@ -1,6 +1,6 @@
-package com.redeok.projeto.Validaton.validator;
+package com.redeok.projeto.validaton.validator;
 
-import com.redeok.projeto.Validaton.annotation.ValidNome;
+import com.redeok.projeto.validaton.annotation.ValidNome;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

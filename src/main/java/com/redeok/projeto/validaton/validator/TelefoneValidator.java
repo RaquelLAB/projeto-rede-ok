@@ -1,6 +1,6 @@
-package com.redeok.projeto.Validaton.validator;
+package com.redeok.projeto.validaton.validator;
 
-import com.redeok.projeto.Validaton.annotation.ValidTelefone;
+import com.redeok.projeto.validaton.annotation.ValidTelefone;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

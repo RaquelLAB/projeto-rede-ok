@@ -1,4 +1,4 @@
-package com.redeok.projeto.Validaton.validator;
+package com.redeok.projeto.validaton.validator;
 
 import com.redeok.projeto.enums.EnumTipoDocumento;
 import jakarta.ws.rs.core.Response;

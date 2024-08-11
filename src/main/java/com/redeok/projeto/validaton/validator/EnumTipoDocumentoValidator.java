@@ -1,6 +1,6 @@
-package com.redeok.projeto.Validaton.validator;
+package com.redeok.projeto.validaton.validator;
 
-import com.redeok.projeto.Validaton.annotation.ValidEnumTipoDocumento;
+import com.redeok.projeto.validaton.annotation.ValidEnumTipoDocumento;
 import com.redeok.projeto.enums.EnumTipoDocumento;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

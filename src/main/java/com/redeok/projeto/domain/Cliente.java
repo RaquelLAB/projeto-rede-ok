@@ -1,19 +1,21 @@
-package com.redeok.projeto.entity;
+package com.redeok.projeto.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import com.redeok.projeto.Validaton.annotation.ValidNome;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.redeok.projeto.validaton.annotation.ValidNome;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import com.redeok.projeto.Validaton.annotation.ValidEnumTipoDocumento;
-import com.redeok.projeto.Validaton.annotation.ValidTelefone;
+import com.redeok.projeto.validaton.annotation.ValidEnumTipoDocumento;
+import com.redeok.projeto.validaton.annotation.ValidTelefone;
 import jakarta.validation.constraints.Pattern;
+import org.jdbi.v3.core.mapper.reflect.ColumnName;
 
-import java.util.Date;
+import java.beans.ConstructorProperties;
+import java.time.LocalDate;
+
 
 public class Cliente {
 
-    @JsonIgnore
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Long id;
 
     @ValidNome
@@ -34,8 +36,23 @@ public class Cliente {
     @NotBlank(message = "Tipo de documento é obrigatório")
     private String tipoDocumento;
 
-    private Date dataCriacao;
+    @ColumnName("data_criacao")
+    private LocalDate dataCriacao;
 
+    @ConstructorProperties({"id_cliente", "nome", "telefone", "email", "numDocumento", "tipoDocumento", "dataCriacao"})
+    public Cliente (Long id_cliente, String nome, String telefone, String email, String numDocumento, String tipoDocumento, LocalDate dataCriacao) {
+        this.id = id_cliente;
+        this.nome = nome;
+        this.telefone = telefone;
+        this.email = email;
+        this.numDocumento = numDocumento;
+        this.tipoDocumento = tipoDocumento;
+        this.dataCriacao = dataCriacao;
+    }
+
+    public Cliente () {
+
+    }
 
     public void setId(Long id) {
         this.id = id;
@@ -85,11 +102,11 @@ public class Cliente {
         this.tipoDocumento = tipoDocumento;
     }
 
-    public Date getDataCriacao() {
+    public LocalDate getDataCriacao() {
         return dataCriacao;
     }
 
-    public void setDataCriacao(Date dataCriacao) {
+    public void setDataCriacao(LocalDate dataCriacao) {
         this.dataCriacao = dataCriacao;
     }
 }

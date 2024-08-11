@@ -1,18 +1,18 @@
-package com.redeok.projeto.Validaton.annotation;
+package com.redeok.projeto.validaton.annotation;
 
 
+import com.redeok.projeto.validaton.validator.NomeValidator;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
-import com.redeok.projeto.Validaton.validator.TelefoneValidator;
 
 import java.lang.annotation.*;
 
 @Documented
-@Constraint(validatedBy = TelefoneValidator.class)
+@Constraint(validatedBy = NomeValidator.class)
 @Target({ ElementType.FIELD, ElementType.PARAMETER })
 @Retention(RetentionPolicy.RUNTIME)
-public @interface ValidTelefone {
-    String message() default "Telefone inválido";
+public @interface ValidNome {
+    String message() default "Nome deve ter apenas letras e espaços";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

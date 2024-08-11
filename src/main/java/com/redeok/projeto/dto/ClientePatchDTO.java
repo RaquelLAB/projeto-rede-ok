@@ -1,4 +1,4 @@
-package com.redeok.projeto.patchDTO;
+package com.redeok.projeto.dto;
 
 import java.util.Optional;
 
